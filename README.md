@@ -22,7 +22,12 @@ conjugation_training/
 │  ├─ data-loader.js
 │  ├─ conjugation.js
 │  ├─ practice.js
-│  └─ rules-ui.js
+│  ├─ rules-ui.js
+│  ├─ rules-helpers.js
+│  ├─ rules-g1.js
+│  ├─ rules-g2.js
+│  ├─ rules-g3.js
+│  └─ rules-adj.js
 ├─ data/
 │  ├─ vocabulary.json
 │  ├─ forms.json
@@ -46,7 +51,13 @@ conjugation_training/
 - `practice.js`
   - 教室人数分の問題生成、カード送り、ランダム処理を担当します。
 - `rules-ui.js`
-  - 「みる → かえる → できあがり」のルール画面を担当します。
+  - ルール画面の状態管理・UI描画を担当します。
+- `rules-helpers.js`
+  - ハイライトや「て形／た形」の共通表示処理を担当します。
+- `rules-g1.js` / `rules-g2.js` / `rules-g3.js`
+  - 各動詞グループのルール表示モデルを担当します。
+- `rules-adj.js`
+  - 形容詞の既存ルール表示を保持します（現在は設計保留）。
 - `app.js`
   - データ読込、ページ切替、キーボード操作をまとめます。
 

@@ -1,0 +1,120 @@
+# =========================================================
+# Secrets / credentials
+# =========================================================
+
+.env
+.env.*
+!.env.example
+
+*.pem
+*.key
+*.p12
+*.pfx
+
+*service-account*.json
+*serviceAccount*.json
+*service_account*.json
+*credentials*.json
+client_secret*.json
+
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+
+secrets/
+_private/
+
+
+# =========================================================
+# Local-only working area
+# =========================================================
+
+_local/
+scratch/
+tmp/
+temp/
+
+
+# =========================================================
+# Dependencies / package managers
+# =========================================================
+
+node_modules/
+
+.npm/
+.pnpm-store/
+.yarn/
+
+
+# =========================================================
+# Build / cache / test output
+# =========================================================
+
+dist/
+build/
+coverage/
+.cache/
+.parcel-cache/
+.vite/
+
+playwright-report/
+test-results/
+
+
+# =========================================================
+# Python local environment
+# Used only for local tooling / simple dev server
+# =========================================================
+
+__pycache__/
+*.py[cod]
+
+.venv/
+venv/
+
+
+# =========================================================
+# Logs / temporary / backup files
+# =========================================================
+
+*.log
+*.tmp
+*.temp
+*.bak
+*.backup
+
+
+# =========================================================
+# Local archives / exports
+# Git history / GitHub Releases should preserve versions
+# =========================================================
+
+*.zip
+*.tar
+*.tar.gz
+
+exports/
+releases-local/
+
+
+# =========================================================
+# Editor / IDE
+# =========================================================
+
+.vscode/
+.idea/
+
+*.swp
+*.swo
+*~
+
+
+# =========================================================
+# OS generated files
+# =========================================================
+
+.DS_Store
+.AppleDouble
+Thumbs.db
+Desktop.ini

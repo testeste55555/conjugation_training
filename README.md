@@ -146,7 +146,19 @@ git diff --staged
 
 ## GitHub Pages
 
-このフォルダの中身をリポジトリへ配置し、GitHub Pagesの公開元に設定すれば動作します。
+このリポジトリは、`main` ブランチ直下をそのまま GitHub Pages で公開する構成です。
+GitHub 上で次を設定してください。
+
+1. `Settings` → `Pages` を開く
+2. `Build and deployment` の `Source` を `Deploy from a branch` にする
+3. Branch を `main`、フォルダを `/ (root)` にする
+4. `Save` を押す
+
+公開URLは通常、次になります。
+
+```text
+https://testeste55555.github.io/conjugation_training/
+```
 
 JSONを `fetch()` で読み込むため、Windowsで `index.html` を直接ダブルクリックして `file://` で開く方法は推奨しません。
 

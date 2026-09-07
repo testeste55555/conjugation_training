@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import fs from 'node:fs';
+import {validateAppData} from '../js/data-validation.js';
+const source=JSON.parse(fs.readFileSync(new URL('../data/vocabulary.json',import.meta.url),'utf8'));
+const forms=JSON.parse(fs.readFileSync(new URL('../data/forms.json',import.meta.url),'utf8'));
+const rules=JSON.parse(fs.readFileSync(new URL('../data/rule-examples.json',import.meta.url),'utf8'));
+const clone=x=>JSON.parse(JSON.stringify(x));
+test('Canonical data validation and malformed data rejection',()=>{
+let checked=0;
+const valid=(v=source,f=forms,r=rules)=>{assert.equal(validateAppData(v,f,r),true);checked++;};
+const invalid=(change,pattern)=>{
+ const [v,f,r]=[clone(source),clone(forms),clone(rules)];
+ change(v,f,r);
+ assert.throws(()=>validateAppData(v,f,r),pattern);
+ checked++;
+};
+valid();
+invalid(v=>v.items.push({...v.items[0],lemma:'ためす'}),/重複/);
+invalid(v=>v.items.push({...v.items[0],id:'W9999'}),/重複/);
+invalid(v=>v.items[0].conjugationType='g9',/分類/);
+invalid(v=>v.items[0].order='first',/並び順/);
+invalid(v=>v.items[0].overrides={te:42},/例外活用/);
+invalid((v,f,r)=>r.g1.endingExamples['う']=['W9999'],/参照ID/);
+invalid((v,f,r)=>r.g2.patterns[0].wordIds=['W0001'],/活用分類/);
+invalid((v,f,r)=>r.g3.patterns[0].wordIds=['W0041'],/subtype/);
+invalid((v,f)=>f.types.g1.forms.push('unknown'),/未定義/);
+invalid((v,f)=>f.types.g1.defaultForms=['unknown'],/初期活用形/);
+invalid((v,f,r)=>r.g1.endingExamples['う']=['W0001'],/語尾/);
+valid((()=>{const v=clone(source);v.items[0].enabled=false;return v;})());
+
+invalid((v,f)=>f.types.g1.forms=f.types.g1.forms.filter(x=>x!=='imperative'),/必須/);
+invalid((v,f)=>f.types.g3.forms=f.types.g3.forms.filter(x=>x!=='prohibitive'),/必須/);
+invalid((v,f)=>{delete f.ruleSources;},/起点/);
+invalid((v,f)=>{f.ruleSources.options=f.ruleSources.options.filter(x=>x.value!=='dict');},/起点/);
+invalid((v,f)=>{f.ruleSources.default='dict';},/起点/);
+invalid((v,f,r)=>{delete r.families.te;},/ルール系列/);
+invalid((v,f,r)=>{delete r.families.ta;},/ルール系列/);
+assert.equal(checked,20);
+});

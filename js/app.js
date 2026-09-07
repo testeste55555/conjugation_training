@@ -13,7 +13,7 @@ async function boot(){
     const practice=initPractice({DATA:data.DATA,FORM_META:data.FORM_META,conjugator});
     const rules=initRules({
       DATA:data.DATA,FORM_META:data.FORM_META,ruleExamples:data.ruleExamples,
-      wordById:data.wordById,conjugator
+      wordById:data.wordById,conjugator,sourceConfig:data.formsConfig.ruleSources
     });
 
     let page='practice';
@@ -41,6 +41,7 @@ async function boot(){
         (e.code==='Space'&&e.target.closest('button')))return;
 
       if(page==='rules'){
+        if(rules.isOverview())return;
         if(e.code==='Space'||e.key==='ArrowRight'){e.preventDefault();rules.nextStep();}
         return;
       }

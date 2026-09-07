@@ -34,6 +34,8 @@
     <section class="panel" aria-label="かたち">
       <p class="label">2　れんしゅうする かたちを えらぶ</p>
       <div class="chips" id="formChips"></div>
+      <button class="smallbtn more-forms-btn" id="formMoreBtn" type="button"
+        aria-controls="formChips" aria-expanded="false" hidden>ほかの かたちを みる</button>
     </section>
 
     <section class="panel" aria-label="にんずう">
@@ -53,7 +55,7 @@
     </section>
 
     <div class="cardwrap">
-      <section class="flashcard" id="flashcard" aria-live="polite">
+      <section class="flashcard" id="flashcard" tabindex="-1" aria-live="polite">
         <div class="groupbadge" id="groupBadge"></div>
         <div class="formbadge" id="formBadge"></div>
         <div class="target" id="targetText"></div>
@@ -81,6 +83,15 @@
   </div>
 
   <div id="rulesPage" hidden>
+    <nav class="rule-view-nav" aria-label="ルールの みかた">
+      <button class="tab active" id="ruleDetailModeBtn" aria-pressed="true" type="button">一つずつみる</button>
+      <button class="tab" id="ruleOverviewModeBtn" aria-pressed="false" type="button">まとめてみる</button>
+    </nav>
+    <section class="panel" id="ruleSourcePanel" aria-label="もとの かたち">
+      <p class="label">もとの かたちを えらぶ</p>
+      <div class="tabs" id="ruleSourceTabs" role="group" aria-label="もとの かたち"></div>
+    </section>
+    <div id="ruleDetailView">
     <section class="panel" aria-label="ルールの しゅるい">
       <p class="label">1　ことばの しゅるい</p>
       <div class="tabs" id="ruleTypeTabs"></div>
@@ -94,22 +105,54 @@
       <div class="chips" id="rulePatternChips"></div>
     </section>
 
+    <section class="panel" id="ruleExamplePanel" hidden>
+      <p class="label">4　れいを えらぶ</p>
+      <div class="chips" id="ruleExampleChips" role="group" aria-label="れいを えらぶ"></div>
+    </section>
+
     <section class="rule-stage" aria-labelledby="ruleTitle">
       <div class="rule-heading">
-        <h2 id="ruleTitle"></h2>
+        <h2 id="ruleTitle" tabindex="-1"></h2>
         <span class="rule-exception" id="ruleException" hidden>とくべつ</span>
       </div>
       <p id="ruleIntro" class="rule-intro"></p>
+      <p id="ruleTargetNote" class="rule-target-note" hidden></p>
       <div id="familyNote" class="family-note" hidden></div>
       <div class="rule-steps" id="ruleSteps"></div>
       <div class="rule-summary" id="ruleSummary" aria-live="polite"></div>
+      <div class="rule-extra-controls" id="ruleExtraControls" hidden>
+        <button class="smallbtn" id="ruleExtraBtn" type="button"
+          aria-controls="ruleSteps" aria-expanded="false">ほかの かたちを みる</button>
+      </div>
       <div class="rule-controls">
+        <button class="smallbtn" id="ruleBackToOverviewBtn" type="button" hidden>まとめにもどる</button>
         <button class="smallbtn" id="ruleRestartBtn">はじめから みる</button>
         <span class="step-count" id="ruleStepCount"></span>
         <button class="bigbtn next" id="ruleStepBtn">つぎを みる</button>
       </div>
       <p class="rule-help">じゅんばんに みて、くらべましょう。</p>
     </section>
+    </div>
+    <div id="ruleOverviewView" hidden>
+      <section class="panel">
+        <p class="label">1　ことばの しゅるい</p>
+        <div class="tabs" id="overviewPosTabs" role="group" aria-label="ことばの しゅるい"></div>
+      </section>
+      <section class="panel">
+        <p class="label">2　まとめる かたちを えらぶ</p>
+        <div class="chips" id="overviewFormChips"></div>
+        <button class="smallbtn more-forms-btn" id="overviewFormMoreBtn" type="button"
+          aria-controls="overviewFormChips" aria-expanded="false" hidden>ほかの かたちを みる</button>
+      </section>
+      <section class="overview-stage" aria-labelledby="overviewTitle">
+        <div class="overview-heading">
+          <h2 id="overviewTitle" tabindex="-1"></h2>
+          <span id="overviewSourceNote" class="overview-source-note"></span>
+        </div>
+        <p class="overview-intro">グループの ちがいを くらべましょう。くわしい へんかは、一つずつ みられます。</p>
+        <div id="overviewGroups" class="overview-groups"></div>
+      </section>
+    </div>
   </div>
 </div>
   <script type="module" src="./js/app.js"></script>

@@ -51,6 +51,8 @@ export function createConjugationEngine(wordByLemma) {
       if (form === 'nai') return g1Stem(word, aStem) + 'ない';
       if (form === 'nakatta') return g1Stem(word, aStem) + 'なかった';
       if (form === 'potential') return g1Stem(word, eStem) + 'る';
+      if (form === 'imperative') return g1Stem(word, eStem);
+      if (form === 'prohibitive') return word + 'な';
     }
 
     if (type === 'g2') {
@@ -64,9 +66,12 @@ export function createConjugationEngine(wordByLemma) {
       if (form === 'nai') return stem + 'ない';
       if (form === 'nakatta') return stem + 'なかった';
       if (form === 'potential') return stem + 'られる';
+      if (form === 'imperative') return stem + 'ろ';
+      if (form === 'prohibitive') return word + 'な';
     }
 
     if (type === 'g3') {
+      if (form === 'prohibitive') return word + 'な';
       const record = recordFor(word);
       const subtype = record?.subtype ?? (word === 'くる' ? 'kuru' : 'suru');
 
@@ -74,7 +79,7 @@ export function createConjugationEngine(wordByLemma) {
         const map = {
           masu:'きます', masen:'きません', mashita:'きました',
           masendeshita:'きませんでした', te:'きて', nai:'こない',
-          ta:'きた', nakatta:'こなかった', potential:'こられる'
+          ta:'きた', nakatta:'こなかった', potential:'こられる', imperative:'こい'
         };
         return map[form] || word;
       }
@@ -83,7 +88,7 @@ export function createConjugationEngine(wordByLemma) {
       const map = {
         masu:'します', masen:'しません', mashita:'しました',
         masendeshita:'しませんでした', te:'して', nai:'しない',
-        ta:'した', nakatta:'しなかった', potential:'できる'
+        ta:'した', nakatta:'しなかった', potential:'できる', imperative:'しろ'
       };
       return stem + (map[form] || 'する');
     }

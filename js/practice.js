@@ -1,4 +1,6 @@
 import { VERB_TYPES } from './conjugation.js';
+import { buildQuestionQueue } from './question-queue.js';
+import { DERIVED_FORM_IDS } from './rules-family.js';
 
 const el = id => document.getElementById(id);
 const escapeHtml = s => String(s).replace(/[&<>"']/g, c => (
@@ -15,6 +17,7 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
     ok:0, again:0, mistakePool:[], started:false, dirty:false
   };
 
+  let moreFormsExpanded = false;
   const defaultFormsForType = type => new Set(DATA[type].defaultForms);
 
   function shuffle(a) {
@@ -26,7 +29,9 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
   }
 
   function clampClassSize(value) {
-    const n = Math.round(Number(value) || 10);
+    const raw = String(value).trim();
+    const parsed = raw === '' ? 10 : Number(raw);
+    const n = Number.isFinite(parsed) ? Math.round(parsed) : 10;
     return Math.max(1, Math.min(50, n));
   }
 
@@ -48,6 +53,7 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
       b.onclick = () => {
         state.type = key;
         state.selectedForms = defaultFormsForType(key);
+        moreFormsExpanded = false;
         renderTabs(); renderForms(); markSettingsDirty();
       };
       box.appendChild(b);
@@ -59,7 +65,9 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
     box.innerHTML = '';
     for (const f of DATA[state.type].forms) {
       const b = document.createElement('button');
+      const extra = DERIVED_FORM_IDS.includes(f);
       b.className = 'chip' + (state.selectedForms.has(f) ? ' active' : '');
+      b.hidden = extra && !moreFormsExpanded && !state.selectedForms.has(f);
       b.textContent = FORM_META[f].label;
       b.setAttribute('aria-pressed', state.selectedForms.has(f));
       b.onclick = () => {
@@ -69,40 +77,11 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
       };
       box.appendChild(b);
     }
-  }
-
-  function distributeCounts(total, forms, randomize) {
-    const order = [...forms];
-    if (randomize) shuffle(order);
-    const base = Math.floor(total / order.length);
-    const extra = total % order.length;
-    const counts = {};
-    order.forEach((f, i) => counts[f] = base + (i < extra ? 1 : 0));
-    return counts;
-  }
-
-  function avoidAdjacentWords(list) {
-    for (let i = 1; i < list.length; i++) {
-      if (list[i].word !== list[i - 1].word) continue;
-      const j = list.findIndex((q, idx) =>
-        idx > i && q.word !== list[i - 1].word &&
-        (idx === list.length - 1 || list[idx + 1]?.word !== list[i].word)
-      );
-      if (j > i) [list[i], list[j]] = [list[j], list[i]];
-    }
-    return list;
-  }
-
-  function buildUniquePartial(count, forms, randomize) {
-    const counts = distributeCounts(count, forms, randomize);
-    const out = [];
-    for (const f of forms) {
-      const words = [...DATA[state.type].words];
-      if (randomize) shuffle(words);
-      for (const word of words.slice(0, counts[f])) out.push({type:state.type, word, form:f});
-    }
-    if (randomize) shuffle(out);
-    return avoidAdjacentWords(out);
+    const more = el('formMoreBtn');
+    const hasExtra = DATA[state.type].forms.some(f => DERIVED_FORM_IDS.includes(f));
+    more.hidden = !hasExtra;
+    more.textContent = moreFormsExpanded ? 'ほかの かたちを とじる' : 'ほかの かたちを みる';
+    more.setAttribute('aria-expanded', String(moreFormsExpanded));
   }
 
   function makeQuestions() {
@@ -111,35 +90,31 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
 
     const forms = [...state.selectedForms];
     const randomize = el('shuffleCheck').checked;
-    const uniqueCount = DATA[state.type].words.length * forms.length;
-    let remaining = state.classSize;
-    const qs = [];
-
-    while (remaining > 0) {
-      const take = Math.min(uniqueCount, remaining);
-      const cycle = buildUniquePartial(take, forms, randomize);
-      if (qs.length && cycle.length > 1 && qs[qs.length - 1].word === cycle[0].word) {
-        const j = cycle.findIndex(q => q.word !== qs[qs.length - 1].word);
-        if (j > 0) [cycle[0], cycle[j]] = [cycle[j], cycle[0]];
-      }
-      qs.push(...cycle);
-      remaining -= take;
-    }
-
-    state.queue = qs; state.index = 0; state.shown = false;
+    state.queue = buildQuestionQueue({
+      type:state.type, words:DATA[state.type].words, forms,
+      count:state.classSize, randomize
+    });
+    state.index = 0; state.shown = false;
     state.mistakePool = []; state.started = true; state.dirty = false;
     el('settingsNote').textContent = state.classSize + 'にんぶんの もんだいを つくりました。';
     el('settingsNote').classList.remove('dirty');
     renderCard();
+    focusCard();
   }
 
   const current = () => state.queue[state.index];
 
-  function pulseFormBadge() {
-    const b = el('formBadge');
-    b.classList.remove('pulse');
-    void b.offsetWidth;
-    b.classList.add('pulse');
+  function focusCard() {
+    if (state.page !== 'practice') return;
+    el('flashcard').focus({preventScroll:true});
+  }
+
+  function pulseTargetForm() {
+    const target = el('targetText').querySelector('.target-form-core');
+    if (!target) return;
+    target.classList.remove('pulse');
+    void target.offsetWidth;
+    target.classList.add('pulse');
   }
 
   function renderCard() {
@@ -158,7 +133,7 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
     }
 
     if (!q) {
-      el('groupBadge').textContent = DATA[state.type].label;
+      el('groupBadge').textContent = DATA[state.queue[0]?.type ?? state.type].label;
       el('formBadge').textContent = '';
       el('targetText').textContent = 'おわり';
       el('wordText').textContent = 'できました';
@@ -170,6 +145,7 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
     }
 
     state.shown = false;
+    el('againBtn').disabled = true; el('okBtn').disabled = true;
     el('groupBadge').textContent = DATA[q.type].label;
     el('formBadge').textContent = FORM_META[q.form].label;
 
@@ -185,7 +161,7 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
     el('answerText').classList.add('hiddenAnswer');
     el('hintText').textContent = 'こたえを いってから、みて ください。';
     el('showBtn').disabled = false; el('nextBtn').disabled = false;
-    fitCard(); pulseFormBadge();
+    fitCard(); pulseTargetForm();
   }
 
   function showAnswer() {
@@ -195,11 +171,12 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
     el('hintText').textContent = 'こえに だして いいましょう。';
     el('showBtn').disabled = true;
     el('againBtn').disabled = false; el('okBtn').disabled = false;
+    focusCard();
   }
 
   function nextQuestion() {
     if (state.page !== 'practice' || !current()) return;
-    state.index++; renderCard();
+    state.index++; renderCard(); focusCard();
   }
 
   function judge(ok) {
@@ -219,7 +196,7 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
       if (el('shuffleCheck').checked) shuffle(extra);
       state.queue.push(...extra);
     }
-    renderCard();
+    renderCard(); focusCard();
   }
 
   function fitCard() {
@@ -239,6 +216,10 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
 
   const setPage = page => { state.page = page; };
 
+  el('formMoreBtn').onclick = () => {
+    moreFormsExpanded = !moreFormsExpanded;
+    renderForms();
+  };
   el('showBtn').onclick = showAnswer;
   el('nextBtn').onclick = nextQuestion;
   el('againBtn').onclick = () => judge(false);
@@ -256,11 +237,11 @@ export function initPractice({ DATA, FORM_META, conjugator }) {
   };
   el('classSizeInput').oninput = markSettingsDirty;
   el('sizeMinus').onclick = () => {
-    el('classSizeInput').value = clampClassSize(Number(el('classSizeInput').value) - 1);
+    el('classSizeInput').value = clampClassSize(clampClassSize(el('classSizeInput').value) - 1);
     markSettingsDirty();
   };
   el('sizePlus').onclick = () => {
-    el('classSizeInput').value = clampClassSize(Number(el('classSizeInput').value) + 1);
+    el('classSizeInput').value = clampClassSize(clampClassSize(el('classSizeInput').value) + 1);
     markSettingsDirty();
   };
   window.addEventListener('resize', fitCard);

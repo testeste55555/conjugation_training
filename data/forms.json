@@ -1,1 +1,201 @@
-{"schemaVersion":1,"types":{"g1":{"label":"1グループ","forms":["masu","masen","mashita","masendeshita","te","nai","ta","dict","nakatta","potential"],"defaultForms":["masu"]},"g2":{"label":"2グループ","forms":["masu","masen","mashita","masendeshita","te","nai","ta","dict","nakatta","potential"],"defaultForms":["masu"]},"g3":{"label":"3グループ","forms":["masu","masen","mashita","masendeshita","te","nai","ta","dict","nakatta","potential"],"defaultForms":["masu"]},"iadj":{"label":"いけいようし","forms":["nowYes","nowNo","pastYes","pastNo","teAdj","kuAdj"],"defaultForms":["nowYes","nowNo","pastYes","pastNo","teAdj","kuAdj"],"designStatus":"hold"},"nadj":{"label":"なけいようし","forms":["nowYes","nowNo","pastYes","pastNo","naAdj","deAdj"],"defaultForms":["nowYes","nowNo","pastYes","pastNo","naAdj","deAdj"],"designStatus":"hold"}},"forms":{"masu":{"label":"ます形","prompt":"ます形に してください"},"masen":{"label":"ません形","prompt":"ません形に してください"},"mashita":{"label":"ました形","prompt":"ました形に してください"},"masendeshita":{"label":"ませんでした形","prompt":"ませんでした形に してください"},"te":{"label":"て形","prompt":"て形に してください"},"nai":{"label":"ない形","prompt":"ない形に してください"},"ta":{"label":"た形","prompt":"た形に してください"},"dict":{"label":"じしょ形","prompt":"じしょ形に してください","sourceForm":"masu"},"nakatta":{"label":"なかった形","prompt":"なかった形に してください"},"potential":{"label":"かのう形","prompt":"かのう形に してください"},"nowYes":{"label":"いま ○","prompt":"いま　○"},"nowNo":{"label":"いま ×","prompt":"いま　×"},"pastYes":{"label":"まえ ○","prompt":"まえ　○"},"pastNo":{"label":"まえ ×","prompt":"まえ　×"},"teAdj":{"label":"くて","prompt":"「くて」の かたち"},"kuAdj":{"label":"く","prompt":"「く」の かたち"},"naAdj":{"label":"な","prompt":"「な」の かたち"},"deAdj":{"label":"で","prompt":"「で」の かたち"}}}
+{
+  "schemaVersion": 1,
+  "types": {
+    "g1": {
+      "label": "1グループ",
+      "forms": [
+        "masu",
+        "masen",
+        "mashita",
+        "masendeshita",
+        "te",
+        "nai",
+        "ta",
+        "dict",
+        "nakatta",
+        "potential",
+        "imperative",
+        "prohibitive"
+      ],
+      "defaultForms": [
+        "masu"
+      ]
+    },
+    "g2": {
+      "label": "2グループ",
+      "forms": [
+        "masu",
+        "masen",
+        "mashita",
+        "masendeshita",
+        "te",
+        "nai",
+        "ta",
+        "dict",
+        "nakatta",
+        "potential",
+        "imperative",
+        "prohibitive"
+      ],
+      "defaultForms": [
+        "masu"
+      ]
+    },
+    "g3": {
+      "label": "3グループ",
+      "forms": [
+        "masu",
+        "masen",
+        "mashita",
+        "masendeshita",
+        "te",
+        "nai",
+        "ta",
+        "dict",
+        "nakatta",
+        "potential",
+        "imperative",
+        "prohibitive"
+      ],
+      "defaultForms": [
+        "masu"
+      ]
+    },
+    "iadj": {
+      "label": "いけいようし",
+      "forms": [
+        "nowYes",
+        "nowNo",
+        "pastYes",
+        "pastNo",
+        "teAdj",
+        "kuAdj"
+      ],
+      "defaultForms": [
+        "nowYes",
+        "nowNo",
+        "pastYes",
+        "pastNo",
+        "teAdj",
+        "kuAdj"
+      ],
+      "designStatus": "hold"
+    },
+    "nadj": {
+      "label": "なけいようし",
+      "forms": [
+        "nowYes",
+        "nowNo",
+        "pastYes",
+        "pastNo",
+        "naAdj",
+        "deAdj"
+      ],
+      "defaultForms": [
+        "nowYes",
+        "nowNo",
+        "pastYes",
+        "pastNo",
+        "naAdj",
+        "deAdj"
+      ],
+      "designStatus": "hold"
+    }
+  },
+  "forms": {
+    "masu": {
+      "label": "ます形",
+      "prompt": "ます形に してください"
+    },
+    "masen": {
+      "label": "ません形",
+      "prompt": "ません形に してください"
+    },
+    "mashita": {
+      "label": "ました形",
+      "prompt": "ました形に してください"
+    },
+    "masendeshita": {
+      "label": "ませんでした形",
+      "prompt": "ませんでした形に してください"
+    },
+    "te": {
+      "label": "て形",
+      "prompt": "て形に してください"
+    },
+    "nai": {
+      "label": "ない形",
+      "prompt": "ない形に してください"
+    },
+    "ta": {
+      "label": "た形",
+      "prompt": "た形に してください"
+    },
+    "dict": {
+      "label": "じしょ形",
+      "prompt": "じしょ形に してください",
+      "sourceForm": "masu"
+    },
+    "nakatta": {
+      "label": "なかった形",
+      "prompt": "なかった形に してください"
+    },
+    "potential": {
+      "label": "かのう形",
+      "prompt": "かのう形に してください"
+    },
+    "nowYes": {
+      "label": "いま ○",
+      "prompt": "いま　○"
+    },
+    "nowNo": {
+      "label": "いま ×",
+      "prompt": "いま　×"
+    },
+    "pastYes": {
+      "label": "まえ ○",
+      "prompt": "まえ　○"
+    },
+    "pastNo": {
+      "label": "まえ ×",
+      "prompt": "まえ　×"
+    },
+    "teAdj": {
+      "label": "くて",
+      "prompt": "「くて」の かたち"
+    },
+    "kuAdj": {
+      "label": "く",
+      "prompt": "「く」の かたち"
+    },
+    "naAdj": {
+      "label": "な",
+      "prompt": "「な」の かたち"
+    },
+    "deAdj": {
+      "label": "で",
+      "prompt": "「で」の かたち"
+    },
+    "imperative": {
+      "label": "めいれい形",
+      "prompt": "めいれい形に してください"
+    },
+    "prohibitive": {
+      "label": "きんし形",
+      "prompt": "きんし形に してください"
+    }
+  },
+  "ruleSources": {
+    "default": "masu",
+    "options": [
+      {
+        "value": "masu",
+        "label": "ます形から"
+      },
+      {
+        "value": "dict",
+        "label": "じしょ形から"
+      }
+    ]
+  }
+}

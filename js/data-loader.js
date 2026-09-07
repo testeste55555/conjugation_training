@@ -1,9 +1,13 @@
+import {validateAppData} from './data-validation.js';
+
 export async function loadAppData() {
   const [vocabulary, formsConfig, ruleExamples] = await Promise.all([
     fetch('./data/vocabulary.json').then(checkResponse),
     fetch('./data/forms.json').then(checkResponse),
     fetch('./data/rule-examples.json').then(checkResponse)
   ]);
+
+  validateAppData(vocabulary, formsConfig, ruleExamples);
 
   const wordById = new Map(vocabulary.items.map(item => [item.id, item]));
   const wordByLemma = new Map(vocabulary.items.map(item => [item.lemma, item]));

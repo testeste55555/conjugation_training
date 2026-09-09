@@ -1,22 +1,10 @@
-/* UD Digi Kyokasho N: use the locally installed regular and bold faces.
-   Font files are not bundled; the device must have the font installed. */
-@font-face {
-  font-family: "UD Kyokasho App";
-  src: local("UD Digi Kyokasho N-R"), local("UD デジタル 教科書体 N-R");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "UD Kyokasho App";
-  src: local("UD Digi Kyokasho N-B"), local("UD デジタル 教科書体 N-B");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-}
+/* Windows の UD デジタル 教科書体 N。
+   実際の書体ファミリー名を優先し、独自の @font-face 別名は使用しない。
+   フォントファイルは配布せず、端末にインストールされた書体を使用する。 */
 :root {
-  --app-font: "UD Kyokasho App", "UD Digi Kyokasho N-R",
-    "UD デジタル 教科書体 N-R", sans-serif;
+  --app-font: "UD デジタル 教科書体 N",
+    "UD Digi Kyokasho N", "UD Digi Kyokasho",
+    "BIZ UDPGothic", "Yu Gothic", sans-serif;
 }
 html, body, button, input, select, textarea, option, optgroup {
   font-family: var(--app-font);

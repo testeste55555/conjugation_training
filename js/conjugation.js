@@ -129,9 +129,8 @@ export function createConjugationEngine(wordByLemma) {
   }
 
   function sourceFor(q) {
-    return q.form === 'dict' && VERB_TYPES.has(q.type)
-      ? conjugateVerb(q.word, q.type, 'masu')
-      : q.word;
+    if (!VERB_TYPES.has(q.type) || q.form === 'masu') return q.word;
+    return conjugateVerb(q.word, q.type, 'masu');
   }
 
   return { conjugateVerb, conjugateAdj, answerFor, sourceFor };
